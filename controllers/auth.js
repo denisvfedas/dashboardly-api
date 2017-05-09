@@ -42,7 +42,7 @@ module.exports = (dataLoader) => {
   // Retrieve current user
   authController.get('/me', onlyLoggedIn, (req, res) => {
     // TODO: this is up to you to implement :)
-    console.log(req.body);
+    //console.log(req.body);
     dataLoader.getUserFromSession(req.sessionToken)
     .then(user => res.status(201).json(user))
     .catch(err => res.status(400).json(err));
