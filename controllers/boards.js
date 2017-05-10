@@ -66,8 +66,11 @@ module.exports = (dataLoader) => {
 
   // Retrieve all the bookmarks for a single board
   boardsController.get('/:id/bookmarks', (req, res) => {
+    dataLoader.getAllBookmarksForBoard(parseInt(req.params.id))
+    .then(data => res.status(201).json(data))
+    .catch(err => res.status(400).json(err));
     // TODO: this is up to you to implement :)
-    res.status(500).json({ error: 'not implemented' });
+    //res.status(500).json({ error: 'not implemented' });
   });
 
   // Create a new bookmark under a board
