@@ -10,8 +10,7 @@ module.exports = (dataLoader) => {
     // TODO: this is up to you to implement :)
     dataLoader.bookmarkBelongsToUser(req.params.id, req.user.users_id)
     .then(() => {
-      return ({
-        id: req.params.id,
+      return dataLoader.updateBookmark(req.params.id, {
         url: req.body.url,
         title: req.body.title
       });
