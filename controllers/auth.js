@@ -2,8 +2,11 @@ const express = require('express');
 
 const onlyLoggedIn = require('../lib/only-logged-in');
 
+const md5 = require('md5');
+
 module.exports = (dataLoader) => {
   const authController = express.Router();
+  
 
   // Create a new user (signup)
   authController.post('/users', (req, res) => {
@@ -40,15 +43,24 @@ module.exports = (dataLoader) => {
 
 
   // Retrieve current user
+  //Gravatar beeng sent here
   authController.get('/me', onlyLoggedIn, (req, res) => {
     // TODO: this is up to you to implement :)
     //console.log(req.body);
     dataLoader.getUserFromSession(req.sessionToken)
+    .then(function(user){ 
+      user.avatarUrl = 'https://www.gravatar.com/avatar/' + md5(user.users_email.toLowerCase().trim());
+      //console.log(user);
+      return user;
+      } 
+    )
     .then(user => res.status(201).json(user))
     .catch(err => res.status(400).json(err));
     //res.status(500).json({ error: 'not implemented' });
 
   });
+  
+  
 
   return authController;
 };
