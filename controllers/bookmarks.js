@@ -26,8 +26,15 @@ module.exports = (dataLoader) => {
   // Delete a bookmark
   bookmarksController.delete('/:id', onlyLoggedIn, (req, res) => {
     // TODO: this is up to you to implement :)
-    res.status(500).json({ error: 'not implemented' });
+    dataLoader.bookmarkBelongsToUser(req.params.id, req.user.users_id)
+    .then(() => {
+      return dataLoader.deleteBookmark(req.params.id);
+    })
+    .then(() => res.status(204).end())
+    .catch(err => res.status(400).json(err));
   });
+  //   res.status(500).json({ error: 'not implemented' });
+  // });
 
   return bookmarksController;
 };
