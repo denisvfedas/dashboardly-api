@@ -10,12 +10,18 @@ module.exports = (dataLoader) => {
 
   // Create a new user (signup)
   authController.post('/users', (req, res) => {
+    // console.log(req.body);
     dataLoader.createUser({
       email: req.body.email,
       password: req.body.password
     })
     .then(user => res.status(201).json(user))
-    .catch(err => res.status(400).json(err));
+    .catch(function(err){ 
+      // Special error handling for duplicate entry
+      if(err.code === 'ER_DUP_ENTRY'){
+        res.status(400).json('That email already exists')
+      }
+      return res.status(400).json(err)});
   });
 
 
@@ -37,6 +43,8 @@ module.exports = (dataLoader) => {
       .then(() => res.status(204).end())
       .catch(err => res.status(400).json(err));
     } else {
+      // console.log(req.sessionToken, "req session token");
+      // console.log(req.body, "req body");
       res.status(401).json({ error: 'Invalid session token' });
     }
   });
