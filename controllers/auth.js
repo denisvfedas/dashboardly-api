@@ -54,7 +54,7 @@ module.exports = (dataLoader) => {
   //Gravatar beeng sent here
   authController.get('/me', onlyLoggedIn, (req, res) => {
     // TODO: this is up to you to implement :)
-    //console.log(req.body);
+    console.log(req.body, "look for token");
     dataLoader.getUserFromSession(req.sessionToken)
     .then(function(user){ 
       user.avatarUrl = 'https://www.gravatar.com/avatar/' + md5(user.users_email.toLowerCase().trim());

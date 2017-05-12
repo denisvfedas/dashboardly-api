@@ -14,6 +14,14 @@ module.exports = (dataLoader) => {
     .then(data => res.json(data))
     .catch(err => res.status(400).json(err));
   });
+  
+  //See if user owns board
+  boardsController.get('/:id/user', onlyLoggedIn, (req, res) => {
+    dataLoader.boardBelongsToUser(parseInt(req.params.id), req.user.users_id)
+    .then(() => res.status(204).json({text: true}))
+    .catch(err => res.status(400).json(err));
+  });
+
 
 
   // Retrieve a single board
